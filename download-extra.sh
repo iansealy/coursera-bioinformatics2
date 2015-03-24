@@ -11,6 +11,7 @@ prefix="$2"
 file=`echo "$url" | sed -e 's/.*\///'`
 rm -f "$file"
 wget -q "$url"
+dos2unix -q "$file"
 
 input="$prefix-extra-input.txt"
 output="$prefix-extra-output.txt"
