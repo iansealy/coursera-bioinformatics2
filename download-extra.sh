@@ -19,7 +19,7 @@ cat /dev/null > "$input"
 cat /dev/null > "$output"
 
 current="$input"
-while read line; do
+while IFS='' read -r line || [ -n "$line" ]; do
     if [[ "$line" =~ ^Input ]]; then
         continue
     fi
