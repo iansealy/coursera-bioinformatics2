@@ -64,7 +64,7 @@ sub get_maximal_non_branching_paths {
 
     my $seen_in_path = {};
 
-    for my $node ( sort { $a <=> $b } keys %{$graph} ) {
+    foreach my $node ( sort { $a <=> $b } keys %{$graph} ) {
         next if scalar @{ $graph->{$node} } == 1 && $indegree->{$node} == 1;
         foreach my $next_node ( @{ $graph->{$node} } ) {
             my @path = ( $node, $next_node );
@@ -93,7 +93,7 @@ sub get_isolated_cycles {
 
     my @paths;                               ## no critic (ProhibitReusedNames)
 
-  NODE: for my $node ( sort { $a <=> $b } keys %{$graph} ) {
+  NODE: foreach my $node ( sort { $a <=> $b } keys %{$graph} ) {
         next if $seen->{$node};
         next if scalar @{ $graph->{$node} } != 1 || $indegree->{$node} != 1;
         my @path = ($node);
