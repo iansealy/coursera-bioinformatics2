@@ -28,29 +28,32 @@ get_and_check_options();
 my $text = path($input_file)->slurp;
 chomp $text;
 
-my ($trie, $position, $indegree) = make_modified_suffix_trie($text);
+my ( $trie, $position, $indegree ) = make_modified_suffix_trie($text);
 
-my ($tree, $label) = make_suffix_tree($trie, $position, $indegree);
+my ( $tree, $label ) = make_suffix_tree( $trie, $position, $indegree );
 
-printf "%s\n", join "\n", get_edge_labels($text, $label);
+printf "%s\n", join "\n", get_edge_labels( $text, $label );
 
 # Construct modified suffix trie
 sub make_modified_suffix_trie {
+    ## no critic (ProhibitReusedNames)
     my ($text) = @_;
 
-    my $trie = { 0 => undef };    # Root
+    my $trie     = { 0 => undef };    # Root
     my $position = {};
     my $indegree = {};
+    ## use critic
 
     my $new_node = 1;
 
-    foreach my $i (0 .. (length $text) - 1) {
-        my $current_node = 0; # Root
-        foreach my $j ($i .. (length $text) - 1) {
+    foreach my $i ( 0 .. ( length $text ) - 1 ) {
+        my $current_node = 0;         # Root
+        foreach my $j ( $i .. ( length $text ) - 1 ) {
             my $symbol = substr $text, $j, 1;
-            if (exists $trie->{$current_node}{$symbol}) {
+            if ( exists $trie->{$current_node}{$symbol} ) {
                 $current_node = $trie->{$current_node}{$symbol};
-            } else {
+            }
+            else {
                 $trie->{$current_node}{$symbol}       = $new_node;
                 $trie->{$new_node}                    = undef;
                 $position->{$current_node}{$new_node} = $j;
@@ -59,10 +62,10 @@ sub make_modified_suffix_trie {
                 $new_node++;
             }
         }
-        if (!defined $trie->{$current_node}) {
-            $trie->{$current_node} = $i; # Leaf node
+        if ( !defined $trie->{$current_node} ) {
+            $trie->{$current_node} = $i;    # Leaf node
         }
-        
+
     }
 
     return $trie, $position, $indegree;
@@ -70,18 +73,21 @@ sub make_modified_suffix_trie {
 
 # Make suffix tree from modified suffix trie
 sub make_suffix_tree {
-    my ( $trie, $position, $indegree ) = @_;
+    my ( $trie, $position, $indegree ) = @_;  ## no critic (ProhibitReusedNames)
 
+    ## no critic (ProhibitReusedNames)
     my $tree  = {};
     my $label = {};
+    ## use critic
 
     foreach my $node ( sort { $a <=> $b } keys %{$trie} ) {
-        if (ref $trie->{$node} ne 'HASH') {
-            $tree->{$node} = $trie->{$node}; # Add leaf node to tree
+        if ( ref $trie->{$node} ne 'HASH' ) {
+            $tree->{$node} = $trie->{$node};    # Add leaf node to tree
             next;
         }
         next if scalar keys %{ $trie->{$node} } == 1 && $indegree->{$node} == 1;
         foreach my $symbol ( keys %{ $trie->{$node} } ) {
+
             # Get non-branching path and add to tree
             my $next_node = $trie->{$node}{$symbol};
             my @path = ( $node, $next_node );
@@ -89,13 +95,17 @@ sub make_suffix_tree {
                 && scalar keys %{ $trie->{$next_node} } == 1
                 && $indegree->{$next_node} == 1 )
             {
-                $next_node = $trie->{$next_node}{ (keys %{ $trie->{$next_node} })[0] };
+                $next_node =
+                  $trie->{$next_node}{ ( keys %{ $trie->{$next_node} } )[0] };
                 push @path, $next_node;
             }
+
             # Edge of tree is first and last nodes of path
-            push @{ $tree->{$path[0]} }, $path[-1];
+            push @{ $tree->{ $path[0] } }, $path[-1];
+
             # Label edge with position and length in text
-            $label->{$path[0]}{$path[-1]} = [ $position->{$path[0]}{$path[1]}, scalar @path - 1 ];
+            $label->{ $path[0] }{ $path[-1] } =
+              [ $position->{ $path[0] }{ $path[1] }, scalar @path - 1 ];
         }
     }
 
@@ -104,14 +114,14 @@ sub make_suffix_tree {
 
 # Get edge labels of suffix tree
 sub get_edge_labels {
-    my ($text, $label) = @_;
+    my ( $text, $label ) = @_;    ## no critic (ProhibitReusedNames)
 
     my @edge_labels;
 
     foreach my $node ( sort { $a <=> $b } keys %{$label} ) {
         foreach my $next_node ( sort { $a <=> $b } keys %{ $label->{$node} } ) {
-            my ($position, $length) = @{ $label->{$node}{$next_node} };
-            push @edge_labels, substr $text, $position, $length;
+            my ( $pos, $length ) = @{ $label->{$node}{$next_node} };
+            push @edge_labels, substr $text, $pos, $length;
         }
     }
 
