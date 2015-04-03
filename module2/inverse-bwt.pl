@@ -32,7 +32,7 @@ printf "%s\n", invert_bwt($bwt);
 
 # Invert BWT
 sub invert_bwt {
-    my ($bwt) = @_;
+    my ($bwt) = @_;    ## no critic (ProhibitReusedNames)
 
     # Add ordinals
     my %ordinal_of;
@@ -53,7 +53,7 @@ sub invert_bwt {
 
     # Reconstruct text
     my $text = q{};
-    my $pos  = $index{'$1'};
+    my $pos  = $index{'$1'};    ## no critic (RequireInterpolationOfMetachars)
     while ( length $text < length $bwt ) {
         my $symbol_ordinal = $sorted_bwt[$pos];
         $text .= substr $symbol_ordinal, 0, 1;
