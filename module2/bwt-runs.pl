@@ -35,7 +35,7 @@ sub make_bwt {
 
     my $text_length = length $text;
 
-    my @positions = sort {
+    my @positions = sort {    ## no critic (RequireSimpleSortBlock)
         my $chr_a;
         my $chr_b;
         my $i = 0;
@@ -71,7 +71,7 @@ sub count_runs {
         else {
             $run_length++;
         }
-        if ( $run_length == 10 ) {
+        if ( $run_length == 10 ) {    ## no critic (ProhibitMagicNumbers)
             $count++;
         }
         $last_chr = $chr;
