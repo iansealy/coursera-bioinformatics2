@@ -149,8 +149,9 @@ row of this distance matrix (use 0-based indexing).
 
 =item B<--input_file FILE>
 
-The input file containing "An integer I<n> followed by the adjacency list of a
-weighted tree with I<n> leaves".
+The input file containing "An integer I<n>, followed by an integer I<j> between
+0 and I<n>, followed by a space-separated additive distance matrix I<D> (whose
+elements are integers)".
 
 =item B<--debug>
 
