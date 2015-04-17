@@ -233,7 +233,8 @@ version 0.1.0
 
 This script implements Additive Phylogeny.
 
-Input: An integer I<n> followed by a space-separated I<n> x I<n> distance matrix.
+Input: An integer I<n> followed by a space-separated I<n> x I<n> distance
+matrix.
 
 Output: A weighted adjacency list for the simple tree fitting this matrix.
 
