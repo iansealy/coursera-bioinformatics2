@@ -226,7 +226,7 @@ weights should be accurate to three decimal places.
 =item B<--input_file FILE>
 
 The input file containing "An integer I<n> followed by a space separated I<n> x
-I<n> distance matrix.".
+I<n> distance matrix".
 
 =item B<--debug>
 
