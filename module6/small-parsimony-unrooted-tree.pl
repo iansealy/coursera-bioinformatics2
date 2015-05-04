@@ -51,7 +51,7 @@ foreach my $character ( 0 .. $characters - 1 ) {
 }
 
 # Remove root node from tree
-$tree = remove_root($tree);
+( $tree, $hamming ) = remove_root( $tree, $hamming );
 
 printf "%d\n", $min_parsimony_score;
 
@@ -77,39 +77,45 @@ sub make_unrooted_tree {
     my $leaf = 0;
     foreach my $edge ( @{$adjacency_list} ) {
         my ( $node1_or_label, $node2_or_label ) = split /->/xms, $edge;
-        if ( $node1_or_label =~ m/\A \d+ \z/xms && $node2_or_label =~ m/\A \d+ \z/xms ) {
+        if (   $node1_or_label =~ m/\A \d+ \z/xms
+            && $node2_or_label =~ m/\A \d+ \z/xms )
+        {
             # Edge ends at internal node
             push @{ $tree->{$node1_or_label} }, $node2_or_label;
             $label->{$node1_or_label} = q{};
             $label->{$node2_or_label} = q{};
         }
-        elsif ($node1_or_label =~ m/\A \d+ \z/xms) {
+        elsif ( $node1_or_label =~ m/\A \d+ \z/xms ) {
+
             # Edge ends at leaf
             my $node;
-            if (!exists $seq_to_node{$node2_or_label}) {
+            if ( !exists $seq_to_node{$node2_or_label} ) {
                 $node = $leaf;
                 $leaf++;
                 $seq_to_node{$node2_or_label} = $node;
-            } else {
+            }
+            else {
                 $node = $seq_to_node{$node2_or_label};
             }
 
             push @{ $tree->{$node1_or_label} }, $node;
-            $label->{$node}  = $node2_or_label;
+            $label->{$node}           = $node2_or_label;
             $label->{$node1_or_label} = q{};
-        } else {
+        }
+        else {
             # Edge starts at leaf
             my $node;
-            if (!exists $seq_to_node{$node1_or_label}) {
+            if ( !exists $seq_to_node{$node1_or_label} ) {
                 $node = $leaf;
                 $leaf++;
                 $seq_to_node{$node1_or_label} = $node;
-            } else {
+            }
+            else {
                 $node = $seq_to_node{$node1_or_label};
             }
 
             push @{ $tree->{$node} }, $node2_or_label;
-            $label->{$node}  = $node1_or_label;
+            $label->{$node}           = $node1_or_label;
             $label->{$node2_or_label} = q{};
         }
     }
@@ -119,25 +125,26 @@ sub make_unrooted_tree {
 
 # Make rooted tree from unrooted tree
 sub make_rooted_tree {
-    my ($unrooted_tree, $label) = @_;
+    my ( $unrooted_tree, $label ) = @_;    ## no critic (ProhibitReusedNames)
 
-    my $root = max(keys %{$unrooted_tree}) + 1;
+    my $root = max( keys %{$unrooted_tree} ) + 1;
 
     # Remove arbitrary edge (including leaf 0) and add root
     my $node1 = 0;
-    my $node2 = shift @{$unrooted_tree->{$node1}};
-    @{$unrooted_tree->{$node2}} = grep { $_ != $node1 } @{$unrooted_tree->{$node2}};
+    my $node2 = shift @{ $unrooted_tree->{$node1} };
+    @{ $unrooted_tree->{$node2} } =
+      grep { $_ != $node1 } @{ $unrooted_tree->{$node2} };
     $unrooted_tree->{$root} = [ $node1, $node2 ];
     $label->{$root} = q{};
 
-    my $tree = {};
+    my $tree = {};                         ## no critic (ProhibitReusedNames)
     $tree->{$root} = [];
     my %seen = ( $root => 1 );
-    while (scalar keys %seen < scalar keys %{$unrooted_tree}) {
-        foreach my $node1 (keys %seen) {
-            foreach my $node2 (@{$unrooted_tree->{$node1}}) {
+    while ( scalar keys %seen < scalar keys %{$unrooted_tree} ) {
+        foreach my $node1 ( keys %seen ) {
+            foreach my $node2 ( @{ $unrooted_tree->{$node1} } ) {
                 next if $seen{$node2};
-                push @{$tree->{$node1}}, $node2;
+                push @{ $tree->{$node1} }, $node2;
                 $tree->{$node2} = [];
                 $seen{$node2} = 1;
             }
@@ -149,14 +156,19 @@ sub make_rooted_tree {
 
 # Remove root from tree and replace with edge
 sub remove_root {
-    my ($tree) = @_;
+    my ( $tree, $hamming ) = @_;    ## no critic (ProhibitReusedNames)
 
-    my $root = max(keys %{$tree});
-    my ($node1, $node2) = @{$tree->{$root}}; # First node is leaf 0
+    my $root = max( keys %{$tree} );
+    my ( $node1, $node2 ) = @{ $tree->{$root} };    # First node is leaf 0
     delete $tree->{$root};
-    push @{$tree->{$node2}}, $node1;
+    push @{ $tree->{$node2} }, $node1;
 
-    return $tree;
+    $hamming->{$node1}{$node2} =
+      $hamming->{$root}{$node1} + $hamming->{$root}{$node2};
+    $hamming->{$node2}{$node1} =
+      $hamming->{$root}{$node1} + $hamming->{$root}{$node2};
+
+    return $tree, $hamming;
 }
 
 # Get minimum parsimony score for tree
