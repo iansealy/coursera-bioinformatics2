@@ -260,7 +260,7 @@ minimize the parsimony score of the tree.
 
     perl small-parsimony.pl --input_file small-parsimony-extra-input.txt
 
-    diff <(perl small-parsimony.pl | sort ) \
+    diff <(perl small-parsimony.pl | sort) \
         <(sort small-parsimony-sample-output.txt)
 
     diff \

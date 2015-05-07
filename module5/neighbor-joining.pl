@@ -187,7 +187,7 @@ neighbor-joining algorithm.
 
     perl neighbor-joining.pl --input_file neighbor-joining-extra-input.txt
 
-    diff <(perl neighbor-joining.pl | sort ) \
+    diff <(perl neighbor-joining.pl | sort) \
         <(sort neighbor-joining-sample-output.txt)
 
     diff \

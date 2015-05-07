@@ -341,7 +341,7 @@ minimize the parsimony score of the tree.
     perl small-parsimony-unrooted-tree.pl \
         --input_file small-parsimony-unrooted-tree-extra-input.txt
 
-    diff <(perl small-parsimony-unrooted-tree.pl | sort ) \
+    diff <(perl small-parsimony-unrooted-tree.pl | sort) \
         <(sort small-parsimony-unrooted-tree-sample-output.txt)
 
     diff \

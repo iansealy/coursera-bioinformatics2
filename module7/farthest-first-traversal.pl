@@ -144,7 +144,7 @@ I<Data> is chosen as the first center to initialize the algorithm.
     perl farthest-first-traversal.pl \
         --input_file farthest-first-traversal-extra-input.txt
 
-    diff <(perl farthest-first-traversal.pl | sort ) \
+    diff <(perl farthest-first-traversal.pl | sort) \
         <(sort farthest-first-traversal-sample-output.txt)
 
     diff \

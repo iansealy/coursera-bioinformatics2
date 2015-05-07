@@ -244,7 +244,7 @@ Output: A weighted adjacency list for the simple tree fitting this matrix.
 
     perl additive-phylogeny.pl --input_file additive-phylogeny-extra-input.txt
 
-    diff <(perl additive-phylogeny.pl | sort ) \
+    diff <(perl additive-phylogeny.pl | sort) \
         <(sort additive-phylogeny-sample-output.txt)
 
     diff \

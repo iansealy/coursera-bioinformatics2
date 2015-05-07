@@ -462,7 +462,7 @@ a blank line.
     perl large-parsimony-heuristic-with-nni.pl \
         --input_file large-parsimony-heuristic-with-nni-extra-input.txt
 
-    diff <(perl large-parsimony-heuristic-with-nni.pl | sort ) \
+    diff <(perl large-parsimony-heuristic-with-nni.pl | sort) \
         <(sort large-parsimony-heuristic-with-nni-sample-output.txt)
 
     diff \

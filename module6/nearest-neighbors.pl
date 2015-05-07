@@ -148,7 +148,7 @@ respect to I<e>. Separate the adjacency lists with a blank line.
 
     perl nearest-neighbors.pl --input_file nearest-neighbors-extra-input.txt
 
-    diff <(perl nearest-neighbors.pl | sort ) \
+    diff <(perl nearest-neighbors.pl | sort) \
         <(sort nearest-neighbors-sample-output.txt)
 
     diff \

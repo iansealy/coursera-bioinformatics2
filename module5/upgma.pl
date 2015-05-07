@@ -203,7 +203,7 @@ weights should be accurate to three decimal places.
 
     perl upgma.pl --input_file upgma-extra-input.txt
 
-    diff <(perl upgma.pl | sort ) <(sort upgma-sample-output.txt)
+    diff <(perl upgma.pl | sort) <(sort upgma-sample-output.txt)
 
     diff \
         <(perl upgma.pl --input_file upgma-extra-input.txt | sort) \
