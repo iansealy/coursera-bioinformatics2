@@ -16,8 +16,6 @@ use Carp;
 use Path::Tiny;
 use version; our $VERSION = qv('v0.1.0');
 
-use Storable qw(dclone);
-
 # Default options
 my $input_file = 'farthest-first-traversal-sample-input.txt';
 my ( $debug, $help, $man );
