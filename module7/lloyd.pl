@@ -32,14 +32,14 @@ my ( $k, $m ) = split /\s+/xms, $integers;
 
 my $centres = dclone( [ @data[ 0 .. $k - 1 ] ] );
 
-$centres = lloyd( \@data, $centres, $k );
+$centres = lloyd( \@data, $centres );
 
 foreach my $centre ( @{$centres} ) {
     printf "%s\n", join q{ }, map { sprintf '%.3f', $_ } @{$centre};
 }
 
 sub lloyd {
-    my ( $data, $centres, $k ) = @_;    ## no critic (ProhibitReusedNames)
+    my ( $data, $centres ) = @_;    ## no critic (ProhibitReusedNames)
 
     while (1) {
         my @clusters;
