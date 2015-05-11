@@ -170,8 +170,7 @@ points from Data are selected as the first I<k> centers.
 
     perl lloyd.pl
 
-    perl lloyd.pl \
-        --input_file lloyd-extra-input.txt
+    perl lloyd.pl --input_file lloyd-extra-input.txt
 
     diff <(perl lloyd.pl | sort) <(sort lloyd-sample-output.txt)
 
