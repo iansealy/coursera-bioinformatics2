@@ -114,9 +114,9 @@ version 0.1.0
 
 This script solves the Squared Error Distortion Problem.
 
-Input: A set of points I<Data> and a set of centers I<Centers>. 
+Input: A set of points I<Data> and a set of centers I<Centers>.
 
-Output: The squared error distortion I<Distortion>(I<Data>, I<Centers>). 
+Output: The squared error distortion I<Distortion>(I<Data>, I<Centers>).
 
 =head1 EXAMPLES
 
